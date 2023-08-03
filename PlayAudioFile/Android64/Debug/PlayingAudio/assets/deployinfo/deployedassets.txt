@@ -1,0 +1,17 @@
+.\assets\internal\icidisibir.mp3
+.\assets\internal\friends.mp3
+.\assets\internal\atletikerdem.mp3
+.\assets\internal\sinanengin1.mp3
+.\assets\internal\kole.mp3
+.\assets\internal\sinanengin3.mp3
+.\assets\internal\altisifir.mp3
+.\assets\internal\akliselim.mp3
+.\assets\internal\beyinbedava.mp3
+.\assets\internal\iyiceoku.mp3
+.\assets\internal\sinanengin2.mp3
+.\assets\internal\sinanengin.mp3
+.\assets\internal\akliselimiki.mp3
+.\assets\internal\soundsample.mp3
+.\assets\internal\degerlendirmeyinbeni.mp3
+.\assets\internal\benimzevklerim.mp3
+.\assets\internal\insansarrafiyim.mp3

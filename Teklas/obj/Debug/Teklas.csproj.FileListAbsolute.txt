@@ -1,0 +1,12 @@
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\bin\Debug\Teklas.exe.config
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\bin\Debug\Teklas.exe
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\bin\Debug\Teklas.pdb
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.csproj.AssemblyReference.cache
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.csproj.SuggestedBindingRedirects.cache
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.Properties.Resources.resources
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.csproj.GenerateResource.cache
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.csproj.CoreCompileInputs.cache
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.exe
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.pdb
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\obj\Debug\Teklas.Form1.resources
+C:\Users\muham\Desktop\TEKLAS PROJE\Teklas\bin\Debug\okul.accdb

@@ -1,0 +1,70 @@
+unit Unit5;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Data.Win.ADODB, Vcl.DBCtrls,
+  Vcl.StdCtrls, Vcl.Mask, Data.Bind.Controls, Vcl.ExtCtrls, Vcl.Buttons,
+  Vcl.Bind.Navigator, Data.Bind.Components, Data.Bind.DBScope, Vcl.Grids,
+  Vcl.DBGrids, Vcl.ComCtrls;
+
+type
+  TForm5 = class(TForm)
+    ADOConnection1: TADOConnection;
+    ADOTable1: TADOTable;
+    DataSource1: TDataSource;
+    ADOTable2: TADOTable;
+    DataSource2: TDataSource;
+    DataSource3: TDataSource;
+    ADOTable3: TADOTable;
+    PageControl1: TPageControl;
+    TabSheet1: TTabSheet;
+    TabSheet2: TTabSheet;
+    GroupBox3: TGroupBox;
+    Label13: TLabel;
+    Label14: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    Label17: TLabel;
+    Label18: TLabel;
+    Label19: TLabel;
+    DBEdit15: TDBEdit;
+    DBEdit16: TDBEdit;
+    DBEdit17: TDBEdit;
+    DBEdit18: TDBEdit;
+    DBEdit19: TDBEdit;
+    DBImage1: TDBImage;
+    BindNavigator1: TBindNavigator;
+    DBEdit20: TDBEdit;
+    DBEdit21: TDBEdit;
+    DBEdit22: TDBEdit;
+    GroupBox1: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    Label10: TLabel;
+    DBEdit2: TDBEdit;
+    DBEdit7: TDBEdit;
+    DBEdit8: TDBEdit;
+    DBEdit9: TDBEdit;
+    DBEdit10: TDBEdit;
+    BindSourceDB1: TBindSourceDB;
+    TabSheet3: TTabSheet;
+    DBGrid2: TDBGrid;
+    DBEdit3: TDBEdit;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form5: TForm5;
+
+implementation
+
+{$R *.dfm}
+
+end.

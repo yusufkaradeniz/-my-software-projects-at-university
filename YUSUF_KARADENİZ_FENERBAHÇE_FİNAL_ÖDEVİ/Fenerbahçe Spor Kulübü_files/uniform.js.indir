@@ -1,0 +1,157 @@
+$(document).ready(function () {
+  var $window = $(window);
+  
+ // $.get('/WebMethods/FeneriumForm', function(data){ 
+   // $('.uniform-property').html(data);
+  //});
+  
+  function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '0' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  };
+  
+  var player = parseInt(getUrlParameter('player'));
+  var branch = parseInt(getUrlParameter('branch'));
+  
+  var culture = 131; 
+  
+  if($('.player-selector').attr("data-culture") != undefined) {
+    culture = parseInt($('.player-selector').attr("data-culture"));
+  }
+  
+   function getStatistics(player, branch, culture){
+    $.get('/WebMethods/PlayerStatisticsHomepage?player='+parseInt(player)+'&branch='+parseInt(branch)+'&c='+parseInt(culture), function(data){ 
+      $('.athletes-wrapper').html(data); 
+      updateCircleProgress();
+    });
+  }
+  
+  $('.player-selector').on('select2:select',function(){
+    player = parseInt(this.value);
+    getStatistics(player, branch, culture);
+  });
+  
+  $('.branch-selector').on('select2:select',function(){
+    branch = parseInt(this.value);
+    getStatistics(player, branch, culture);
+  });
+  
+  getStatistics($(".player-selector").val(), branch, culture);
+  
+  
+  var br = parseInt(getUrlParameter('br'));
+  
+  function getFixture(br,m){
+      $.get('/WebMethods/FixtureHomepage?br=' + parseInt(br) + '&month=' + parseInt(m), function(data){ 
+      
+      var slider = $('.match-calendar-slider'),
+          sliderWrapper = slider.parent();
+      
+      var totalItemCount = slider.children().length,
+          maxItem = 4;
+      
+      slider.html("");
+      slider.trigger('destroy.owl.carousel');
+      slider.next('.visible-mobile').append('<div class="custom-slider-control"></div>');
+      
+      $('.match-calendar-slider').html(data);
+      
+      var customControl = sliderWrapper.find('.custom-slider-control');
+      
+      slider.owlCarousel({
+        navContainer: [customControl, $('.custom-slider-control[data-target="' + slider.selector + '"]')],
+        dotsContainer: customControl,
+        nav: true,
+        dots: true,
+        navText: ["<i class='icon icon-arrow-left'></i>", "<i class='icon icon-arrow-right'></i>"],
+        responsive: {
+          0: {
+            items: 1,
+            margin: 15,
+            stagePadding: 20,
+          },
+          600: {
+            items: 2,
+            margin: 15,
+            stagePadding: 60,
+          },
+          768: {
+            items: 2,
+            margin: 10,
+            stagePadding: 0
+          },
+          992: {
+            items: 3,
+            margin: 20,
+            nav: (totalItemCount >= maxItem ? true : false)
+          },
+          1440: {
+            items: maxItem,
+            margin: 30,
+            nav: (totalItemCount >= maxItem ? true : false)
+          }
+        }
+      });
+    });
+  };
+  
+  (function() {
+    $('.br-selector').on('select2:select',function(){
+        br = parseInt(this.value);
+        m = parseInt($('.month-selector').val());            
+        getFixture(br, m);        
+    });
+    })();
+
+    (function () {
+        $('.month-selector').on('select2:select', function () {
+            m = parseInt(this.value);
+            br = parseInt($('.br-selector').val());            
+            getFixture(br,m);
+        });
+    })();    
+  
+  $window.on('load', function() {
+    createCircleProgress();
+  });
+  
+  function createCircleProgress() {
+    $('.circle-chart').circleProgress({
+      size: 106,
+      startAngle: 4.7,
+      thickness: 4,
+      emptyThickness: 2,
+    }).on('circle-animation-progress', function(event, progress, stepValue) {
+      $(this).find('.percent').html('<sub>%</sub>' + "<span class='percent-value'>" + Math.round(100 * stepValue) + "</span>");
+    });
+    
+    var elem = $('.athletes-wrapper');
+    if(!elem.length) return false;
+    
+    function calc(){
+      if(elem.hasClass('animated')) return false;
+      
+      if((elem.offset().top + (elem.outerHeight() / 2)) < ($window.scrollTop() + $window.outerHeight()) ){
+        $('.circle-chart').circleProgress();
+        elem.addClass('animated');
+      }
+    }
+    
+    $(window).scroll(calc);
+    $(window).resize(calc);
+  }
+  
+  function updateCircleProgress() {
+    $('.circle-chart').circleProgress({
+      size: 106,
+      startAngle: 4.7,
+      thickness: 4,
+      emptyThickness: 2,
+    }).on('circle-animation-progress', function(event, progress, stepValue) {
+      $(this).find('.percent').html('<sub>%</sub>' + "<span class='percent-value'>" + Math.round(100 * stepValue) + "</span>");
+    });
+  }
+  
+});

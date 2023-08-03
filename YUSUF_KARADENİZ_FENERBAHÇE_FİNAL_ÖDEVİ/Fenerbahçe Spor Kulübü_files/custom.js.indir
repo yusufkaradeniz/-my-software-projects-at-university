@@ -1,0 +1,1158 @@
+$(document).ready(function () {
+    $('.fixture-group').css('display', 'inherit');
+
+    (function () {
+        var gatewayTextarea = $('#gatewayForm').find('textarea');
+        if (!gatewayTextarea.length) return false;
+        gatewayTextarea.parents().removeClass('active');
+        $('#p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone2_zoneForm_On_lineForm_viewBiz_SecurityCode_captchaControl_lblSecurityCode').text('Güvenlik Kodunu Giriniz:');
+    })();
+
+    (function () {
+        if (!$('.search-result-header').length) return false;
+
+        var searchResultFilter = $('.search-result-header .dropdown-menu li:not(.hide) input[type="checkbox"]');
+        searchResultFilter.each(function () {
+            $(this).not('rendered').iCheck({
+                checkboxClass: 'icheckbox_primary',
+                radioClass: 'iradio_primary'
+            });
+
+
+            var filterAll = $('#p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZoneSearchBoxAndFilters_CategoryFilter_chklstFilter_0'),
+                filterPhoto = $('#p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZoneSearchBoxAndFilters_CategoryFilter_chklstFilter_1'),
+                filterVideo = $('#p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZoneSearchBoxAndFilters_CategoryFilter_chklstFilter_2');
+
+
+            if (filterAll.attr('checked')) {
+                $('input#all[type="checkbox"]').iCheck('check');
+                console.log(1);
+            }
+
+            else if (filterPhoto.attr('checked')) {
+                $('input#photoNews[type="checkbox"]').iCheck('check');
+                console.log(2);
+            }
+
+            else if (filterVideo.attr('checked')) {
+                $('input#videoNews[type="checkbox"]').iCheck('check');
+                console.log(3);
+            }
+            $(this).on('ifChanged', function () {
+                var searchType = parseInt($(this).val());
+
+                if (searchType === 0) {
+                    filterAll.trigger('click')
+                }
+                else if (searchType === 1) {
+                    filterPhoto.trigger('click');
+
+                }
+                else if (searchType === 2) {
+                    filterVideo.trigger('click');
+                }
+            });
+        });
+    })();
+
+
+    (function () {
+        var smsConfirmText = $('#smsconfirmtext');
+        if (smsConfirmText.length) {
+            $('.form-section').find('.desc').text(smsConfirmText.text());
+        }
+    })();
+
+    (function () {
+        /*
+    Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.TextBoxWatermarkBehavior, {"ClientStateFieldID":"p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone2_zoneForm_On_lineForm_viewBiz_Mesaj_exWatermark_ClientState","id":"p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone2_zoneForm_On_lineForm_viewBiz_Mesaj_exWatermark","watermarkCssClass":"form-control custom-form-control styled-textarea personContactMessage WatermarkText","watermarkText":""}, null, null, $get("p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone2_zoneForm_On_lineForm_viewBiz_Mesaj_txtText"));
+    });
+    
+    Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.TextBoxWatermarkBehavior, {"ClientStateFieldID":"p_lt_WebPartZone6_zoneSearchBar_SmartSearchBox_txtWord_exWatermark_ClientState","id":"p_lt_WebPartZone6_zoneSearchBar_SmartSearchBox_txtWord_exWatermark","watermarkText":""}, null, null, $get("p_lt_WebPartZone6_zoneSearchBar_SmartSearchBox_txtWord"));
+    });
+    
+    Sys.Application.add_init(function() {
+    $create(Sys.Extended.UI.TextBoxWatermarkBehavior, {"ClientStateFieldID":"p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZoneSearchBoxAndFilters_SmartSearchBox_txtWord_exWatermark_ClientState","id":"p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZoneSearchBoxAndFilters_SmartSearchBox_txtWord_exWatermark","watermarkText":""}, null, null, $get("p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZoneSearchBoxAndFilters_SmartSearchBox_txtWord"));
+    });
+    */
+    })();
+
+    $(".invoiceOption .iCheck-helper, .invoiceOption .primary-icheck label").click(function () {
+        if ($('.individualInfo').css('display') != 'none') {
+            $(".individualInfo").css('display', "none");
+            $(".CorporateInfo").css('display', "block");
+        }
+        else {
+            $(".individualInfo").css('display', "block");
+            $(".CorporateInfo").css('display', "none");
+        }
+    });
+
+    var RequestContent = $('[data-ajax-content="AjaxRequestContent"]');
+    var RequestContentQueue = 0;
+
+    RequestContent.each(function () {
+
+        var RequestContentOrder = null,
+            RequestContentDiv = null,
+            RequestPage = RequestContent.attr('data-ajax-page');
+        if (RequestPage == "Discount") {
+            RequestContentOrder = $(this).find("#SelectDiscount");
+            RequestContentDiv = $(this).find(".flex-wrapper");
+        }
+        else if (RequestPage == "CvGAnnouncements") {
+            RequestContentDiv = $(this).find(".flex-wrapper");
+        }
+        else if (RequestPage == "VakfiFenerVideos") {
+            RequestContentDiv = $(this).find(".flex-wrapper");
+        }
+        else {
+            RequestContentOrder = $(this).find("#SelectActivitiesDate");
+            RequestContentDiv = $(this).find("#eventListDiv");
+        }
+
+        var RequestUrl = RequestContent.attr('data-ajax-url'),
+            RequestPiece = RequestContent.attr('data-ajax-piece'),
+            MoreButton = $(this).find("#btnMore");
+
+        MoreButton.click(function () {
+            RequestContentQueue++;
+            SendRequest(RequestUrl, RequestContentQueue, RequestPiece, (RequestContentOrder == null ? "" : RequestContentOrder.val()), false);
+            return false;
+        });
+
+        if (RequestContentOrder != null) {
+            RequestContentOrder.change(function () {
+                RequestContentQueue = 0;
+                MoreButton.css("display", "table");
+                SendRequest(RequestUrl, RequestContentQueue, RequestPiece, RequestContentOrder.val(), true);
+            });
+        }
+        function SendRequest(url, queue, piece, sort, clearStatus) {
+            $.get(url, { queue: queue, piece: piece, sort: sort })
+                .done(function (res) {
+                    var data = JSON.parse(res);
+                    if (data.status == "success") {
+                        if (clearStatus) RequestContentDiv.html("")
+                        if (RequestPage == "Discount") {
+                            appendDiscountHtml(data.data);
+                            CYDiscountPopup();
+                        }
+                        else if (RequestPage == "CvGAnnouncements")
+                            appendCvGAnnouncementsHtml(data.data);
+                        else appendActivitiesHtml(data.data);
+                    }
+                })
+        };
+
+        function appendDiscountHtml(data) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    RequestContentDiv.append('<div class="col-md-6 col-sm-8 col-xs-12 col-xxs-24">' +
+                        '<div class="card-img-wrapper">' +
+                        '<a href="javascript:;" class="card-img-widget has-discount media-card" data-id=' + data[i].id + ' >' +
+                        '<div class="card-img">' +
+                        '<img class="img-responsive" src="' + data[i].Image + '" alt="" />' +
+                        '<div class="ribbon">' + data[i].DiscountRate + '</div>' +
+                        '</div>' +
+                        '<div class="card-footer">' +
+                        '<h5 class="card-title">' + data[i].Marka + '</h5>' +
+                        '<p class="detail">' +
+                        '<b class="title">Son Tarih :</b>' +
+                        '<span class="value">' + data[i].DateTime + '</span>     ' +
+                        '</p>' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>' +
+                        '</div>');
+
+                };
+            } else {
+                MoreButton.css("display", "none");
+            }
+        };
+
+        function appendActivitiesHtml(data) {
+
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    RequestContentDiv.append('<div class="col-lg-6 col-md-8 col-xs-12 col-xxs-24">' +
+                        '<a href="' + data[i].Link + '" class="media-card activity">' +
+
+                        '<figure class="media">' +
+
+                        '<img class="img-responsive" src="' + data[i].Image + '" alt="' + data[i].Title + '" />' +
+
+                        '<div class="media-bubble" style="background-image: url(\'/FB/media/FB/CocukveGenclik/item-buble.png\');">' +
+
+                        '<span>' + data[i].DateDay + '</span>' +
+                        '<span>' + data[i].DateMonth + '</span>' +
+
+                        '</div>' +
+
+                        '</figure>' +
+                        '<div class="content">' +
+                        '<div class="top-title secondary">' + data[i].ActivityName + '</div>' +
+                        '<h3 class="title">' + data[i].Title + '</h3>' +
+                        '</div >');
+                };
+            } else {
+                MoreButton.css("display", "none");
+            }
+        };
+
+        function appendCvGAnnouncementsHtml(data) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    RequestContentDiv.append('<div class="col-md-6 col-sm-8 col-xxs-12">' +
+                        '<a href="' + data[i].Link + '" class="media-card secondary">' +
+                        '<figure class="media">' +
+                        '<img class="img-responsive" src="' + data[i].Image + '" alt="" />' +
+                        '</figure>' +
+                        '<div class="content">' +
+                        '<h3 class="title">' + data[i].title + '</h3>' +
+                        '<div class="short-desc">' +
+                        '<span class="item">' + data[i].DayName + '</span>' +
+                        '<span class="item">' + data[i].DayHour + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>');
+
+                };
+            } else {
+                MoreButton.css("display", "none");
+            }
+        };
+    });
+
+    //<!-- winwinresult  -->
+    $('.PhoneresultMask').mask('000 000 00 00').on('focus', function () {
+        $(this).attr('placeholder', '(XXX) XXX XX XX');
+    }).on('focusout', function () {
+        $(this).attr('placeholder', '');
+    });
+
+    var RequestContent = $(".winwin-result-unq");
+
+    RequestContent.each(function () {
+
+        var requestbtn = $(this).find("#btnsrg"),
+            RequestContentDiv = null,
+            frm1 = $(this).find(".frm1"),
+            frm2 = $(this).find(".frm2"),
+            RequestUrl = RequestContent.attr('data-ajax-url');
+
+
+        requestbtn.click(function () {
+
+            var response = grecaptcha.getResponse();
+
+            var inputVal = $.trim($("#phonenumber").val().replace(/\s/g, ''));
+
+            if (inputVal.length > 0 && response.length != 0) {
+                $(document.body).addClass('form-post-message-open');
+                requestbtn.remove();
+                frm1.addClass("hidden");
+                SendRequest(RequestUrl, inputVal);
+            }
+            else {
+                swal({
+                    type: 'error',
+                    title: 'Hata!',
+                    text: (inputVal.length == 0) ? 'Lütfen bilgileri eksiksiz ve doğru giriniz.' : 'Lütfen captcha doğrulamasını yapınız',
+                    confirmButtonText: 'Tamam',
+                    confirmButtonColor: '#002d72'
+                });
+            }
+        });
+
+
+        function SendRequest(url, value) {
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                async: false,
+                data: { p: value },
+                error: function () {
+                    errorStatus
+                },
+                success: function (msg) {
+                    var data = JSON.parse(msg);
+                    if (data.status == "success") {
+                        if (data.data.Status != "") {
+                            CRT(data.data)
+                        }
+                        else {
+                            errorStatus()
+                        }
+                    } else {
+                        errorStatus()
+                    }
+                }
+            });
+        };
+
+        function errorStatus() {
+            frm1.removeClass('hidden');
+            frm1.find(".fields-btn").append('<a id="btnrld" href="javascript:;" onClick="window.location.reload( true );" class="btn btn-yellow">YENİLE</a>');
+            frm1.find(".field-body").append('<p style="color: red;font - weight: 600;">Çekiliş Kaydı Bulunamadı</p>');
+            $(document.body).removeClass('form-post-message-open');
+        }
+
+        function CRT(item) {
+            frm2.removeClass('hidden');
+            frm2.find(".row").append('<table class="custom-responsive-table customFontsize">' +
+                '<thead>' +
+                '<tr>' +
+                '<th scope="col"><span>Telefon Numarası</span></th>' +
+                '<th scope="col"><span>Ödül</span></th>' +
+                '<th scope="col"><span>Asil/Yedek</span></th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '<tr>' +
+                '<td data-label="Telefon">' + item.Phone + '<span></span></td>' +
+                '<td data-label="Ödül"><span>' + item.Result + '</span></td>' +
+                '<td data-label="Asil/Yedek"><span>' + item.Status + '</span></td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>');
+
+            $(document.body).removeClass('form-post-message-open');
+        }
+    });
+
+    //<!-- Homepage News Widget  -->
+    $('[data-toggle="AjaxRequest"]').each(function () {
+
+        var $this = $(this);
+        var _url = $this.attr('data-ajax-page'),
+            _tab = $this.find('[data-toggle="tabName"]'),
+            _div = $this.find(".tab-content").find(".flex-wrapper");
+
+        _tab.click(function (e) {
+            e.preventDefault();
+
+            if ($(this).parent().hasClass('active')) return false;
+
+            $.get(_url, { p: $(this).attr("href").replace('#', '') })
+                .done(function (res) {
+                    var data = $(res).find("#requestdiv").html();
+                    _div.html("");
+                    _div.append(data);
+
+                    newsCardSlider();
+                });
+
+            _tab.parent().removeClass("active");
+            $(this).parent().addClass("active");
+        });
+    });
+
+    function newsCardSlider() {
+        var newsCardSlider = $('.news-card-slider');
+        if (!newsCardSlider.length) return false;
+        newsCardSlider.owlCarousel({
+            items: 1,
+            dots: false,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            margin: 10,
+            animateIn: "fadeIn",
+            animateOut: "fadeOut"
+        });
+    }
+
+    $(window).on('load', newsCardSlider);
+
+    $("#BtnCreateData").click(function (e) {
+        e.preventDefault();
+        $(this).attr("disabled", true);
+        $(this).text('Lütfen Bekleyin');
+        $.get("/CMSPages/webservice.asmx/PdfProvider", { g: $(this).attr("data-g") }, function (res) {
+            if (res.status === 'success') {
+                $("#BtnCreateData").remove();
+                $(".PdfButton").append('<a id="dwnldpdf" class="btn btn-yellow" href="' + res.data + '" title="" download>İNDİR</a>');
+                $("#dwnldpdf")[0].click();
+            }
+        }, 'JSON');
+    })
+
+    $("#btnkSil").click(function (e) {
+        e.preventDefault();
+        $(this).attr("disabled", true);
+        $(this).text('Lütfen Bekleyin');
+        $.get($(this).attr("data-url"), { g: $(this).attr("data-g") }, function (res) {
+            if (res.status === 'success') {
+                swal({
+                    type: res.status,
+                    title: res.title,
+                    text: res.message,
+                    confirmButtonText: 'Tamam',
+                    confirmButtonColor: '#002d72'
+                }).then(function () {
+                    window.location = res.url;
+                });
+
+
+            } else {
+                swal({
+                    type: res.status,
+                    title: res.title,
+                    text: res.message,
+                    confirmButtonText: 'Tamam',
+                    confirmButtonColor: '#002d72'
+                });
+            }
+        }, 'JSON');
+    })
+
+
+
+    $("#facebookLogin").click(function (e) {
+        e.preventDefault();
+        var ajaxUrl = $(this).attr('data-ajax-url');
+        var dli = $(this).attr('data-login-id');
+        var rtnUrl = getParameterByName('returnurl');
+
+        FB.login(function (response) {
+            if (response && response.status == 'connected') {
+                $(document.body).addClass('form-post-message-open');
+                $.post(ajaxUrl, { "FAT": response.authResponse.accessToken, "returnUrl": rtnUrl, "DLI": dli }, function (res) {
+                    if (res.status == "success") {
+                        if (res.returnStatus == true) {
+                            window.location = res.returnUrl;
+                        }
+                    } else {
+                        $(document.body).removeClass('form-post-message-open');
+                        swal({
+                            type: data.status,
+                            title: data.title,
+                            text: data.message,
+                            confirmButtonText: "Tamam",
+                            confirmButtonColor: '#002d72'
+                        }).then(function () {
+                            if (data.redirectStatus == true)
+                                window.location = ReturnUrl;
+                        });
+                    }
+                }, 'JSON');
+
+            }
+        }, {
+            scope: 'email,user_likes,user_birthday,user_gender,user_location',
+            return_scopes: true
+        });
+    });
+
+    //Çocuk ve Gençlik İndirimler
+    CYDiscountPopup();
+    //Çocuk ve Gençlik İndirimler
+
+    // Brand Popup
+    FCBrandPopup();
+    //Brand Popup
+
+
+    //Branş Haberler LoadMore
+
+    var loadMoreCounter = 1,
+        loadMoreBtn = $("#newsBranches"),
+        newsContent = $("#newsBranchesDiv"),
+        dataPiece = newsContent.attr('data-ajax-piece'),
+        ajaxUrl = newsContent.attr('data-ajax-url'),
+        dataBranch = newsContent.attr('data-ajax-branch'),
+        loadingText = newsContent.attr('data-ajax-loading'),
+        loadMoreText = newsContent.attr('data-ajax-buttonText'),
+        newsTypeArr = [dataBranch];
+
+    newsTypeArr.push()
+
+
+    loadMoreBtn.click(function (e) {
+        e.preventDefault();
+        loadMoreBtn.text(loadingText);
+        loadMoreBtn.prop('disabled', true);
+
+
+        $.post(ajaxUrl, {
+            NewsInfo: JSON.stringify({
+                newsType: newsTypeArr,
+                index: loadMoreCounter,
+                size: dataPiece,
+                newsCategory: '0',
+                newsTime: 0
+            })
+        }, function (res) {
+
+            var data = JSON.parse(JSON.stringify(res));
+
+            if (data.status === "success") {
+
+                if (data.NList.length === 0) {
+                    loadMoreBtn.addClass('hide');
+                } else {
+
+                    $(data.NList).filter(function (index, item) {
+                        newsContent.append('<div class="col-md-6 col-sm-8 col-xxs-12">\n' +
+                            '                    <a class="media-card" href="' + item.AbsoluteURL + '" title="' + item.Title + '">\n' +
+                            '                        <figure class="media">\n' +
+                            '                            <img class="img-responsive" src="' + item.ImageDetail + '" alt="' + item.Title + '" />\n' +
+                            '                        </figure>\n' +
+                            '                        <div class="content">\n' +
+                            '                            <h2 class="category-title ' + item.IconColor + '">' + item.IconName + '</h2>\n' +
+                            '                            <h3 class="title">' + item.Title + '</h3>\n' +
+                            '                            <div class="short-desc">\n' +
+                            '                                <span class="item video ' + (item.Category === "foto" ? 'hide' : '') + '"><i class="icon icon-play-arrow"></i></span>\n' +
+                            '                                <span class="item">' + item.NewsDate + '</span>\n' +
+                            '                                <span class="item">' + item.NewsTime + '</span>\n' +
+                            '                            </div>\n' +
+                            '                        </div>\n' +
+                            '                    </a>\n' +
+                            '                </div>');
+                    });
+
+                    loadMoreBtn.removeClass('hide');
+                    loadMoreBtn.text(loadMoreText);
+                    loadMoreBtn.prop('disabled', false);
+                }
+
+                loadMoreCounter++;
+            }
+        }, "JSON");
+
+
+    });
+    //Player Filter
+
+    (function () {
+
+        var $this = $('[data-toggle="playerSection"]'),
+            branchInfo = $this.attr('data-branch-info'),
+            branchg = $this.attr('data-branch-g-info'),
+            ajaxUrl = $this.attr('data-ajax-url'),
+            loadingText = $this.attr('data-ajax-loading'),
+            MoreText = $this.attr('data-ajax-buttonText'),
+            dataPiece = $this.attr('data-ajax-piece'),
+            dataDetail = $this.attr('data-ajax-detay'),
+
+
+            positions = $this.find('#tabPosition'),
+            selectGender = $this.find('#tabGender'),
+            loadMoreCount = 1,
+            loadArea = $this.find('[data-load="loadPlayer"]'),
+            loadMoreBtn = $this.find('#playerMore'),
+            Classifications = $this.find('#tabClassmanFilter');
+
+        positions.change(function () {
+            loadMoreCount = 0;
+            loadArea.html('');
+            requestPlayer();
+        });
+
+        Classifications.change(function () {
+            loadMoreCount = 0;
+            loadArea.html('');
+            requestPlayer();
+        });
+
+        selectGender.change(function () {
+            loadMoreCount = 0;
+            requestClassification($(this).val());
+        });
+
+        loadMoreBtn.click(function (e) {
+            e.preventDefault();
+            loadMoreBtn.text(loadingText);
+            loadMoreBtn.prop('disabled', true);
+            requestPlayer();
+        });
+
+        function requestPlayer() {
+            $.post(ajaxUrl, {
+                FilterInfo: JSON.stringify({
+                    branchGender: selectGender.length ? selectGender.val() : branchg,
+                    index: loadMoreCount,
+                    size: dataPiece,
+                    branch: branchInfo,
+                    position: positions.length ? positions.val() : "0",
+                    classification: Classifications.length ? Classifications.val() : 0,
+                })
+            }, function (res) {
+
+                var data = JSON.parse(JSON.stringify(res));
+
+                if (data.status === "success") {
+
+                    if (data.PList.length === 0) {
+                        loadMoreBtn.addClass('hide');
+                    } else {
+
+                        $(data.PList).filter(function (index, item) {
+
+                            if (item.IsOlympicSportsman) {
+
+                                loadArea.append('<div class="col-md-6 col-sm-8 col-xxs-12">\n' +
+                                    '  <a href = "' + (item.AbsoluteURL == "" ? "javascript:;" : item.AbsoluteURL) + '" class="player-card">\n' +
+                                    '  <div class="card-photo" >\n' +
+                                    '  <div class="fill" style = "background-image: url(\'' + item.Image + '\');"></div>\n' +
+                                    '  <img class="img-responsive" src = "' + item.Image + '" alt = "' + item.NameSurname + '"/>\n' +
+                                    '  </div>\n' +
+                                    '  <div class="card-content">\n' +
+                                    '  <span class="name"> ' + item.NameSurname + '</span>\n' +
+                                    '  <div class="text"> ' + '<p>' + item.PlayerPosition + '</p>' + '<p>' + item.BirthDay + '</p>' + '<p>' + item.PlayerDescription + '</p>' + '</div>\n' +
+
+                                    '  <span class="number" >' + (item.PlayerNumber != "" ? '#' + item.PlayerNumber : "") + '</span>\n' +
+                                    '      </div>\n' +
+                                    '  </a>\n' +
+                                    '  </div>');
+
+                            } else {
+
+                                loadArea.append('<div class="col-md-6 col-sm-8 col-xxs-12">\n' +
+                                    '  <a href = "' + (item.AbsoluteURL == "" ? "javascript:;" : item.AbsoluteURL) + '" class="player-card">\n' +
+                                    '  <div class="card-photo" >\n' +
+                                    '  <div class="fill" style = "background-image: url(\'' + item.Image + '\');"></div>\n' +
+                                    '  <img class="img-responsive" src = "' + item.Image + '" alt = "' + item.NameSurname + '"/>\n' +
+                                    '  </div>\n' +
+                                    '  <div class="card-content">\n' +
+                                    '  <span class="name"> ' + item.NameSurname + '</span>\n' +
+                                    '  <span class="task"> ' + item.PlayerPosition + '</span>\n' +
+                                    '  <button type = "button" class="btn btn-gradient forest-green">' + dataDetail + '</button>\n' +
+                                    '  <span class="number" >' + (item.PlayerNumber != "" ? '#' + item.PlayerNumber : "") + '</span>\n' +
+                                    '      </div>\n' +
+                                    '  </a>\n' +
+                                    '  </div>');
+                            }
+                        });
+
+                        loadMoreBtn.removeClass('hide');
+                        loadMoreBtn.text(MoreText);
+                        if (data.PList.length < 16) {
+                            loadMoreBtn.addClass('hide');
+                        } else {
+                            loadMoreBtn.prop('disabled', false);
+                        }
+                    }
+
+                    loadMoreCount++;
+                }
+            }, "JSON");
+        }
+
+        function requestClassification(gender) {
+            $.post('/CMSPages/WebService.asmx/ClassificationFilter', { "G": gender, "B": branchInfo }, function (res) {
+                var data = JSON.parse(JSON.stringify(res));
+
+
+                if (data.status == "success") {
+
+                    if (Classifications.length) {
+
+                        Classifications.empty();
+                        Classifications.append('<option value=""></option>');
+                        Classifications.append('<option selected value="0">Tüm Sınıflar</option>');
+                        $(data.CList).filter(function (index, item) {
+                            Classifications.append('<option ' + (index == 0 ? "selected" : "") + ' value="' + item.ID + '">' + item.Name + '</option>');
+                        });
+                    }
+
+                    loadArea.html('');
+                    requestPlayer();
+                }
+            }, 'JSON');
+        }
+
+    })();
+
+    function FCBrandPopup() {
+        var brandPopup = $('[data-toggle="brandPopup"]');
+        if (!brandPopup.length) return false;
+
+        brandPopup.each(function () {
+            var $this = $(this),
+                modal = $this.find('.text-modal'),
+                mediaCard = $this.find('.media-card'),
+                ajaxUrl = $this.attr('fcbdata-ajax-url'),
+                errorTitle = $this.attr('data-error-title'),
+                errorText = $this.attr('data-error-text'),
+                errorBtn = $this.attr('data-error-btn'),
+                popupTitle = modal.find('.modal-title'),
+                popupText = modal.find('.modal-text');
+
+            mediaCard.unbind("click");
+
+            mediaCard.click(function (e) {
+                e.preventDefault();
+
+                if ($(this).hasClass('passive')) return false;
+
+                $.post(ajaxUrl, { brandId: $(this).attr('data-id') }, function (res) {
+                    var data = JSON.parse(JSON.stringify(res));
+
+                    if (data.status === "success") {
+
+                        popupTitle.text("");
+                        popupText.text("");
+
+                        popupTitle.text(data.title);
+                        popupText.html(data.message);
+
+
+                        modal.modal('show');
+                    } else {
+                        swal({
+                            type: 'error',
+                            title: errorTitle,
+                            text: errorText,
+                            confirmButtonText: errorBtn,
+                            confirmButtonColor: '#002d72'
+                        });
+                    }
+                }, "JSON");
+
+            });
+        });
+    }
+
+    // Cocuk ve Genclik Duyurular
+    var RequestContent = $("#CY_announcements")
+    RequestContentQueue = 0;
+
+    RequestContent.each(function () {
+
+        var RequestTab = RequestContent.find("#CY_announcements_tab").find("li").find('a'),
+            RequestPiece = RequestContent.attr('data-ajax-piece'),
+            LoadMoreDiv = RequestContent.find("#CY_LoadMoreField"),
+            PageTitle = RequestContent.find("#pageTitle"),
+            MoreButton = RequestContent.find('#CY_announcements_btnMore');
+
+        RequestTab.click(function () {
+            RequestContentQueue = 0;
+            MoreButton.attr('data-ajax-url', $(this).attr('data-ajax-url'));
+            PageTitle.text($(this).attr('data-page-title'));
+            LoadMoreDiv.html('');
+            MoreButton.removeAttr("style");
+            SendRequest();
+        });
+
+
+        MoreButton.click(function (e) {
+            e.preventDefault();
+            RequestContentQueue++;
+            SendRequest();
+        });
+
+        function SendRequest() {
+            $.get(MoreButton.attr('data-ajax-url'), { queue: RequestContentQueue, piece: RequestPiece })
+                .done(function (res) {
+                    var data = JSON.parse(res);
+                    if (data.status == "success") {
+                        if (data.data.length > 0)
+                            appendHtml(data.data);
+                        else MoreButton.css("display", "none");
+                    }
+                })
+        };
+
+        function appendHtml(data) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    LoadMoreDiv.append('<div class="col-md-6 col-sm-8 col-xxs-12">' +
+                        '<a class="media-card" href="' + data[i].Link + '" title="">' +
+                        '<figure class="media">' +
+                        '<img class="img-responsive" src="' + data[i].Image + '" alt="">' +
+                        '</figure>' +
+                        '<div class="content">' +
+                        '<div class="top-title">ÇOCUK VE GENÇLİK KULÜBÜ</div>' +
+                        '<h3 class="title">' + data[i].title + '</h3>' +
+                        '<div class="short-desc">' +
+                        '<span class="item">' + data[i].DayName + '</span>' +
+                        '<span class="item">' + data[i].DayHour + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>');
+
+                };
+            }
+        };
+    });
+
+    // Taraftar Liste More
+    var RequestContent = $("#Fans_ListMore")
+    RequestContentQueue = 0;
+
+    RequestContent.each(function () {
+
+        var /*RequestTab = RequestContent.find("#CY_announcements_tab").find("li").find('a'),*/
+            RequestPiece = RequestContent.attr('data-ajax-piece'),
+            LoadMoreDiv = RequestContent.find("#fanList_LoadMoreField"),
+            //PageTitle = RequestContent.find("#pageTitle"),
+            MoreButton = RequestContent.find('#fanList_btnMore');
+
+        //RequestTab.click(function () {
+        //    RequestContentQueue = 0;
+        //    MoreButton.attr('data-ajax-url', $(this).attr('data-ajax-url'));
+        //    PageTitle.text($(this).attr('data-page-title'));
+        //    LoadMoreDiv.html('');
+        //    MoreButton.removeAttr("style");
+        //    SendRequest();
+        //});
+
+
+        MoreButton.click(function (e) {
+            e.preventDefault();
+            RequestContentQueue++;
+            SendRequest();
+        });
+
+        function SendRequest() {
+            $.get(MoreButton.attr('data-ajax-url'), { queue: RequestContentQueue, piece: RequestPiece })
+                .done(function (res) {
+                    var data = JSON.parse(res);
+                    if (data.status == "success") {
+                        if (data.data.length > 0)
+                            appendHtml(data.data);
+                        else MoreButton.css("display", "none");
+                    }
+                })
+        };
+
+        function appendHtml(data) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    LoadMoreDiv.append('<div class="col-md-6 col-sm-8 col-xxs-12">' +
+                        '<a class="media-card secondary" href="' + data[i].Link + '" title="">' +
+                        '<figure class="media">' +
+                        '<img class="img-responsive" src="https://media.fenerbahce.org' + data[i].Image.replace("~", "") + '" alt="">' +
+                        '</figure>' +
+                        '<div class="content">' +
+                        ' <h2 class="category-title scooter">' + data[i].category + '</h2>' +
+                        '<h3 class="title">' + data[i].title + '</h3>' +
+                        '<div class="short-desc">' +
+                        '<span class="item">' + data[i].DayName + '</span>' +
+                        '<span class="item">' + data[i].DayHour + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>');
+
+                };
+            }
+        };
+    });
+
+
+    // Online Üyelik Haberler
+    var RequestContent = $("#OM_announcements")
+    RequestContentQueue = 0;
+
+    RequestContent.each(function () {
+
+        var /*RequestTab = RequestContent.find("#CY_announcements_tab").find("li").find('a'),*/
+            RequestPiece = RequestContent.attr('data-ajax-piece'),
+            LoadMoreDiv = RequestContent.find("#OM_LoadMoreField"),
+            PageTitle = RequestContent.attr('data-field-title'),
+            MoreButton = RequestContent.find('#OM_announcements_btnMore');
+
+        //RequestTab.click(function () {
+        //    RequestContentQueue = 0;
+        //    MoreButton.attr('data-ajax-url', $(this).attr('data-ajax-url'));
+        //    PageTitle.text($(this).attr('data-page-title'));
+        //    LoadMoreDiv.html('');
+        //    MoreButton.removeAttr("style");
+        //    SendRequest();
+        //});
+
+
+        MoreButton.click(function (e) {
+            e.preventDefault();
+            RequestContentQueue++;
+            SendRequest();
+        });
+
+        function SendRequest() {
+            $.get(MoreButton.attr('data-ajax-url'), { queue: RequestContentQueue, piece: RequestPiece })
+                .done(function (res) {
+                    var data = JSON.parse(res);
+                    if (data.status == "success") {
+                        if (data.data.length > 0)
+                            appendHtml(data.data);
+                        else MoreButton.css("display", "none");
+                    }
+                })
+        };
+
+        function appendHtml(data) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    LoadMoreDiv.append('<div class="col-md-6 col-sm-8 col-xxs-12">' +
+                        '<a class="media-card" href="' + data[i].Link + '" title="">' +
+                        '<figure class="media">' +
+                        '<img class="img-responsive" src="' + data[i].Image + '" alt="">' +
+                        '</figure>' +
+                        '<div class="content">' +
+                        '<div class="top-title">' + PageTitle + '</div>' +
+                        '<h3 class="title">' + data[i].title + '</h3>' +
+                        '<div class="short-desc">' +
+                        '<span class="item">' + data[i].DayName + '</span>' +
+                        '<span class="item">' + data[i].DayHour + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>');
+
+                };
+            }
+        };
+    });
+
+    // Sosyal Sorumluluk Haberler
+    var RequestContent = $("#SR_News")
+    RequestContentQueue = 0;
+
+    RequestContent.each(function () {
+
+        var RequestPiece = RequestContent.attr('data-ajax-piece'),
+            LoadMoreDiv = RequestContent.find("#SR_LoadMoreField"),
+            PageTitle = RequestContent.attr('data-field-title'),
+            MoreButton = RequestContent.find('#SR_news_btnMore');
+
+
+        MoreButton.click(function (e) {
+            e.preventDefault();
+            RequestContentQueue++;
+            SendRequest();
+        });
+
+        function SendRequest() {
+            $.get(MoreButton.attr('data-ajax-url'), { queue: RequestContentQueue, piece: RequestPiece })
+                .done(function (res) {
+                    var data = JSON.parse(res);
+                    if (data.status == "success") {
+                        if (data.data.length > 0)
+                            appendHtml(data.data);
+                        else MoreButton.css("display", "none");
+                    }
+                })
+        };
+
+        function appendHtml(data) {
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    LoadMoreDiv.append('<div class="col-md-6 col-sm-8 col-xxs-12">' +
+                        '<a class="media-card" href="' + data[i].Link + '" title="">' +
+                        '<figure class="media">' +
+                        '<img class="img-responsive" src="' + data[i].Image + '" alt="">' +
+                        '</figure>' +
+                        '<div class="content">' +
+                        '<div class="top-title">' + PageTitle + '</div>' +
+                        '<h3 class="title">' + data[i].title + '</h3>' +
+                        '<div class="short-desc">' +
+                        '<span class="item">' + data[i].DayName + '</span>' +
+                        '<span class="item">' + data[i].DayHour + '</span>' +
+                        '</div>' +
+                        '</div>' +
+                        '</a>' +
+                        '</div>');
+
+                };
+            }
+        };
+    });
+
+    // documentready end
+
+});
+
+function CYDiscountPopup() {
+    var discountPopup = $('[data-toggle="discountPopup"]');
+    if (!discountPopup.length) return false;
+
+    discountPopup.each(function () {
+        var $this = $(this),
+            modal = $this.find('.text-modal'),
+            mediaCard = $this.find('.media-card'),
+            ajaxUrl = $this.attr('cydata-ajax-url'),
+            errorTitle = $this.attr('data-error-title'),
+            errorText = $this.attr('data-error-text'),
+            errorBtn = $this.attr('data-error-btn'),
+            popupTitle = modal.find('.modal-title'),
+            popupText = modal.find('.modal-text');
+
+        mediaCard.unbind("click");
+
+        mediaCard.click(function (e) {
+            e.preventDefault();
+
+            if ($(this).hasClass('passive')) return false;
+
+            $.post(ajaxUrl, { discountId: $(this).attr('data-id') }, function (res) {
+                var data = JSON.parse(JSON.stringify(res));
+
+                if (data.status === "success") {
+
+                    popupTitle.text("");
+                    popupText.text("");
+
+                    popupTitle.text(data.title);
+                    popupText.html(data.message);
+
+
+                    modal.modal('show');
+                } else {
+                    swal({
+                        type: 'error',
+                        title: errorTitle,
+                        text: errorText,
+                        confirmButtonText: errorBtn,
+                        confirmButtonColor: '#002d72'
+                    });
+                }
+            }, "JSON");
+
+        });
+    });
+}
+
+function PostbackAfterjsForPayments() {
+    $('select').not('[data-ignore=true]').each(function () {
+
+        var $this = $(this);
+
+        $this.not('[data-ignore=true]').select2({
+            dropdownCssClass: 'customDropdown',
+            minimumResultsForSearch: -1,
+            width: '100%',
+            "language": {
+                "noResults": function () {
+                    return "-";
+                }
+            }
+        }).on('select2:select', function (e) {
+            var selectedElement = $(this).select2('data')[0];
+            if ($(selectedElement.element).attr('value')) {
+                $(this).data('select2').$container.addClass('selected');
+            } else {
+                $(this).data('select2').$container.removeClass('selected');
+            }
+        });
+
+        $window.on('load', function () {
+            if ($this.val()) {
+                $this.next('.select2').addClass('selected');
+            }
+        });
+    });
+
+
+
+    var form = $('.primary-form'),
+        elements = form.find('.custom-form-group').not('.rendered');
+
+    elements.each(function () {
+        var self = $(this),
+            input = self.find('input, textarea');
+
+        if (input.val()) {
+            self.addClass('active');
+        }
+
+        input.focus(function () {
+            self.addClass('active');
+        });
+
+        input.focusout(function () {
+            if (input.val()) {
+                self.addClass('active');
+            } else {
+                self.removeClass('active');
+            }
+        });
+        input.change();
+        self.addClass('rendered');
+    });
+}
+
+function hospitalityWarningModal(text) {
+    $(".hospitalityWarning").text(text);
+    $('#textMessageHospitalty').modal('show')
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function runPayment(item) {
+    $(document).ready(function () {
+        $("#etkPopup").css("display", "none");
+        $("#cardHtml").append(item); $("#threeDModal").modal('show');
+
+
+    });
+}
+
+function ResendCode(item) {
+    setTimeout(function () {
+        $(".resend").removeAttr("style");
+
+        $(".resend").click(function (e) {
+            e.preventDefault();
+            $.post('/CMSPages/WebService.asmx/sendPassCode', { U: item }, function (res) {
+                var data = JSON.parse(JSON.stringify(res));
+                if (data.status == "success") {
+                    $(".resend").css("display", "none");
+                    setTimeout(function () {
+                        $(".resend").removeAttr("style");
+                    }, 40000);
+                } else {
+                    swal({
+                        type: data.status,
+                        title: data.title,
+                        text: data.message,
+                        confirmButtonText: "Tamam",
+                        confirmButtonColor: '#002d72'
+                    }).then(function () {
+                        if (data.redirectStatus == true)
+                            location.reload();
+                    });
+                }
+            }, "JSON");
+        });
+
+    }, 40000);
+}
+
+function swalFunction(type, title, text, confirmButtonText, confirmButtonColor, redirectStatus, redirectUrl) {
+    if (redirectStatus == "true") {
+        swal({
+            type: type,
+            title: title,
+            text: text,
+            confirmButtonText: confirmButtonText,
+            confirmButtonColor: confirmButtonColor
+        }).then(function () {
+            window.location = redirectUrl;
+        });
+    } else {
+        swal({
+            type: type,
+            title: title,
+            text: text,
+            confirmButtonText: confirmButtonText,
+            confirmButtonColor: confirmButtonColor
+        })
+    }
+}

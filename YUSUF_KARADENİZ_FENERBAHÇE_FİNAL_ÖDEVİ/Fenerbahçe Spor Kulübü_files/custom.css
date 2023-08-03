@@ -1,0 +1,195 @@
+.statistic-progress-list {margin-top: 50px;}
+.fixture-group {display:none;}
+.gateway-section .primary-form .custom-form-group .field-desc {color: #524c4c;}
+.gateway-section .scrollable-content > div, .gateway-section .scrollable-content .FormPanel {display: flex; flex-flow: column; justify-content: center; height: 100%;}
+.gateway-section textarea.WatermarkText {color: #524c4c !important;}
+.gateway-section .primary-icheck {margin-top: 0;}
+.gateway-section .scrollable-content > div {display: flex;flex-flow: column;justify-content: center;}
+div#p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone2_ZoneForm_On_lineForm_viewBiz_pM_pMP { display:none; }
+@media (max-width: 767px) {.news-item-mobile .dropdown-group, .news-item-mobile .primary-select { width: 100%;} }
+/*.fluid-article-section .timeline-section-wrapper .timeline-item.right .timeline-img { margin-left: 0!important; display: flex; align-items: flex-start; flex-flow: column;}*/
+/*.fluid-article-section .timeline-section-wrapper .timeline-item.left .timeline-img { margin-right: 0!important; display: flex; align-items: flex-end; flex-flow: column;}*/
+/*.fluid-article-section .timeline-section-wrapper .section-content { padding-left: 0!important; padding-right: 0 !important;}*/
+.form-section .alert {display: block; font-size: 14px;}
+.person-card .person-img.non-filter { filter: none; }
+.PollControl {display: table; width: 100%;}
+.custom-filter-content-header {align-items: flex-end; color: #000000;}
+@media (min-width: 480px) and (max-width: 1200px) {.custom-content-header {display: flex!important; flex-flow: row !important;} }
+#p_lt_WebPartZone1_zoneMembership_plcMembership_p_lt_WebPartZone2_zoneRegister_CustomisedRegistrationForm_lblCaptcha, lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone2_zoneForm_On_lineForm_viewBiz_SecurityCode_captchaControl_lblSecurityCode, #p_lt_WebPartZone1_zoneMembership_plcMembership_p_lt_WebPartZone1_zoneLogin_CustomisedLogonForm_Login1_lblCaptcha {font-size: 14px; margin-bottom: 5px; display: block;}
+#smsconfirmtext {display: none;}
+
+.primary-form .custom-form-control:disabled, .primary-form .custom-form-control.disabled {
+  background-color: transparent;
+}
+.twittersettings{
+  word-break: break-all;
+}
+.ScoreStatusLetter{
+  margin: 0 auto;
+  text-align: center;    
+  width: 26%;
+  color: white;  
+  font-weight: 600;
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+}
+.publisher{
+  font-size: 11px;  
+}
+.Sozlesmelist-style-none {
+  list-style: none;
+}
+#textMessageHospitalty .modal-content {
+  background-image: url(/FB/media/FB/Images/-GenelGorseller/saracoglu.jpg);
+  background-repeat: no-repeat; 
+  background-size: 95% 95%;
+  background-position: center;
+}
+
+#textMessageHospitalty .modal-content h4.modal-title {
+  color: darkblue;
+  font-size: 22px;
+  text-align: center;
+}
+#textMessageHospitalty .modal-content p.hospitalityWarning {
+  color: #000;
+}
+#textMessageHospitalty .modal-content .modal-header img {
+  max-width:120px;
+}
+#textMessageHospitalty .modal-content h6.title {
+  font-size: 14px;
+  color: #000000;
+}
+#textMessageHospitalty .modal-content .icon {
+  font-weight: 600;
+}
+
+.customStyleMargin{
+  margin-bottom:40px;
+}
+
+.customFontsize [data-label='IBAN Numarası'] span {
+  font-size: 13px;
+}
+.customGeneral {
+  padding: 0px !important;
+}
+.customMiniCard {
+  margin: -50px 0 50px !important; 
+}
+.customImg{
+  position:static !important;
+}
+
+@media(max-width: 767px) {
+  .section-banner.right {
+    background-position: right -400px center;
+  }
+}
+.CorporateInfo{
+  display:none;
+}
+
+.ErrorLabelC{
+  display: block;
+  font-size: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #f0d8d8;
+  border-color: #f0d8d8;
+  color: #f00;
+}
+
+#sweepstakeForm .ErrorLabel {
+  display: block;
+  font-size: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  color: #a94442;
+}
+.cstmchmp{
+  width: 100%;
+  height: 50px;
+  position: relative;
+}
+#registerForm .gender-status { display: flex; flex-flow: column; align-items: flex-start; } #registerForm .gender-status .select-nation { margin-top: 5px; }
+
+.winwinform-style .winwinkayit{ margin-top: 20px;}
+
+@media (max-width: 350px) {
+  .winwinform-style div#p_lt_WebPartZone7_zoneContent_pagePlaceHolder_p_lt_WebPartZone1_ZonePaymentInfo_On_lineForm_viewBiz_ctl00_ctl01_fcSecurityCode_captchaControl_captcha_pnlRecaptchaControl {
+    position: relative;
+    padding-top: 70%;
+    width: 100%;
+  }
+  
+  
+  .winwinform-style .cms-recaptcha-wrap {
+    position: absolute;
+    top: 0;
+    left: 15px;
+    transform: scale(0.8);
+    transform-origin: left;
+  }
+  
+  .winwinform-style .FormButton {
+    margin-left: 15px;
+    margin-top: 0;
+  }
+}
+.contract-table tr td{
+  vertical-align: top;
+}
+
+.news-card-slider .owl-stage-outer {overflow:hidden;}
+
+.mb-0{
+  margin-bottom:0px !important;
+}
+.mb-1{
+  margin-bottom:10px !important;
+}
+
+.mb-2{
+  margin-bottom:20px !important;
+}
+
+@media(min-width: 992px) {
+  header.header-settings-en-US .navbar-nav>li {
+    margin-right: 70px;
+  }
+  
+  header.header-settings-en-US .navbar-nav>li:last-child {
+    margin-right: 0;
+  }
+}
+
+@media(min-width: 1200px) {
+  header.header-settings-en-US .navbar-nav>li {
+    margin-right: 85px;
+  }
+}
+
+<!-- Dikey Ortalama
+.modal .modal-dialog.modal-dialog-scrollable {
+display: flex;
+flex-direction: column;
+justify-content: center;
+height: 100%;
+max-height: 100%;
+margin: 0 .5rem;
+}
+@media (min-width: 768px) {
+.modal .modal-dialog.modal-dialog-scrollable {
+max-height: calc(100% - 1rem);
+margin: 0 auto;
+}
+}-->

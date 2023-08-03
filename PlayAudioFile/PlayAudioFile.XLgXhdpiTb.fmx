@@ -1,0 +1,5 @@
+inherited AudioPlayBackForm_XLgXhdpiTb: TAudioPlayBackForm_XLgXhdpiTb
+  ClientHeight = 1255
+  ClientWidth = 800
+  DesignerMasterStyle = 3
+end
